@@ -1,0 +1,162 @@
+/* ゲームコレクションのスタイル */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --accent-color: #e74c3c;
+    --dark-color: #34495e;
+    --light-color: #ecf0f1;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --card-radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: var(--dark-color);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeIn 1s ease-in-out;
+}
+
+header h1 {
+    font-size: 3rem;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* ゲームグリッド */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* ゲームカード */
+.game-card {
+    background-color: white;
+    border-radius: var(--card-radius);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--dark-color);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+}
+
+.game-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 50%;
+    background-color: var(--light-color);
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.invader-icon {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: var(--primary-color);
+}
+
+.blocks-icon {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: var(--secondary-color);
+}
+
+.othello-icon {
+    background-color: rgba(52, 73, 94, 0.2);
+    color: var(--dark-color);
+}
+
+.tetris-icon {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: var(--accent-color);
+}
+
+.game-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.game-card p {
+    color: #666;
+}
+
+/* フッター */
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    color: #666;
+    border-top: 1px solid #ddd;
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .game-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* 新しいゲームを追加した際のカスタマイズ用テンプレート */
+/* 
+.game-name-icon {
+    background-color: rgba(R, G, B, 0.2);
+    color: #colorcode;
+}
+*/

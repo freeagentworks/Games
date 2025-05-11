@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゲームコレクション</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ゲームコレクション</h1>
+            <p class="subtitle">お好みのゲームを選んで遊んでみよう！</p>
+        </header>
+        
+        <main class="game-grid" id="game-grid">
+            <!-- ゲームカード：Invader -->
+            <a href="Invader/Invader.html" class="game-card">
+                <div class="game-icon invader-icon">🚀</div>
+                <h2>Invader</h2>
+                <p>宇宙から侵略してくる敵を倒すシューティングゲーム</p>
+            </a>
+            
+            <!-- ゲームカード：Blocks -->
+            <a href="blocks/blocks.html" class="game-card">
+                <div class="game-icon blocks-icon">🧱</div>
+                <h2>Blocks</h2>
+                <p>ブロックを崩すクラシックなゲーム</p>
+            </a>
+            
+            <!-- ゲームカード：Othello -->
+            <a href="othello/othello.html" class="game-card">
+                <div class="game-icon othello-icon">⚫⚪</div>
+                <h2>Othello</h2>
+                <p>二人対戦の定番ボードゲーム</p>
+            </a>
+            
+            <!-- ゲームカード：Tetris -->
+            <a href="tetris/tetris.html" class="game-card">
+                <div class="game-icon tetris-icon">🎮</div>
+                <h2>Tetris</h2>
+                <p>落ちてくるブロックを組み合わせるパズルゲーム</p>
+            </a>
+            
+            <!-- 新しいゲームを追加する場合はここに同様の形式でカードを追加 -->
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 ゲームコレクション. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // 自動的に新しいゲームを検出して追加するためのスクリプト（将来実装予定）
+        document.addEventListener('DOMContentLoaded', () => {
+            // 将来的にはAJAXでゲーム一覧を取得するなどの拡張が可能
+            console.log('ゲームコレクションページが読み込まれました');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シンプルオセロゲーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .status {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            grid-template-rows: repeat(8, 50px);
+            gap: 2px;
+            background-color: #000;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .cell {
+            background-color: #008000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .disc {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .black {
+            background-color: #000;
+        }
+        .white {
+            background-color: #fff;
+        }
+        .valid-move {
+            background-color: rgba(0, 128, 0, 0.7);
+            position: relative;
+        }
+        .valid-move::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .score {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+        .score div {
+            display: flex;
+            align-items: center;
+        }
+        .score-disc {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>シンプルオセロゲーム</h1>
+    <div class="score">
+        <div>
+            <div class="score-disc black"></div>
+            <span id="black-score">2</span>
+        </div>
+        <div>
+            <div class="score-disc white"></div>
+            <span id="white-score">2</span>
+        </div>
+    </div>
+    <div class="status" id="status">あなたの番です（黒）</div>
+    <div class="board" id="board"></div>
+    <button id="restart">ゲームをリスタート</button>
+
+    <script>
+        // ゲームの状態
+        const EMPTY = 0, BLACK = 1, WHITE = 2;
+        let board = [];
+        let currentPlayer = BLACK;
+        let gameOver = false;
+
+        // 方向ベクトル（8方向）
+        const directions = [
+            [-1, -1], [-1, 0], [-1, 1],
+            [0, -1],           [0, 1],
+            [1, -1],  [1, 0],  [1, 1]
+        ];
+
+        // ゲームの初期化
+        function initGame() {
+            // 盤面の初期化
+            board = Array(8).fill().map(() => Array(8).fill(EMPTY));
+            
+            // 初期配置
+            board[3][3] = WHITE;
+            board[3][4] = BLACK;
+            board[4][3] = BLACK;
+            board[4][4] = WHITE;
+            
+            currentPlayer = BLACK;
+            gameOver = false;
+            
+            renderBoard();
+            updateStatus();
+        }
+
+        // 盤面の描画
+        function renderBoard() {
+            const boardElement = document.getElementById('board');
+            boardElement.innerHTML = '';
+            
+            const validMoves = getValidMoves(currentPlayer);
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    
+                    // 既存の石を表示
+                    if (board[row][col] !== EMPTY) {
+                        const disc = document.createElement('div');
+                        disc.className = `disc ${board[row][col] === BLACK ? 'black' : 'white'}`;
+                        cell.appendChild(disc);
+                    }
+                    
+                    // 有効な手を表示（プレイヤーのターンのみ）
+                    if (currentPlayer === BLACK && !gameOver) {
+                        const isValidMove = validMoves.some(move => move.row === row && move.col === col);
+                        if (isValidMove) {
+                            cell.classList.add('valid-move');
+                        }
+                    }
+                    
+                    // クリックイベント
+                    cell.addEventListener('click', () => makeMove(row, col));
+                    
+                    boardElement.appendChild(cell);
+                }
+            }
+            
+            // スコアの更新
+            updateScore();
+        }
+
+        // スコアの更新
+        function updateScore() {
+            let blackCount = 0, whiteCount = 0;
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    if (board[row][col] === BLACK) blackCount++;
+                    else if (board[row][col] === WHITE) whiteCount++;
+                }
+            }
+            
+            document.getElementById('black-score').textContent = blackCount;
+            document.getElementById('white-score').textContent = whiteCount;
+        }
+
+        // 状態メッセージの更新
+        function updateStatus() {
+            const statusElement = document.getElementById('status');
+            
+            if (gameOver) {
+                const blackCount = parseInt(document.getElementById('black-score').textContent);
+                const whiteCount = parseInt(document.getElementById('white-score').textContent);
+                
+                if (blackCount > whiteCount) {
+                    statusElement.textContent = 'ゲーム終了 - あなたの勝ちです！';
+                } else if (whiteCount > blackCount) {
+                    statusElement.textContent = 'ゲーム終了 - AIの勝ちです！';
+                } else {
+                    statusElement.textContent = 'ゲーム終了 - 引き分けです！';
+                }
+            } else {
+                if (currentPlayer === BLACK) {
+                    statusElement.textContent = 'あなたの番です（黒）';
+                } else {
+                    statusElement.textContent = 'AIの番です（白）...';
+                }
+            }
+        }
+
+        // 有効な手の取得
+        function getValidMoves(player) {
+            const validMoves = [];
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    if (isValidMove(row, col, player)) {
+                        validMoves.push({ row, col });
+                    }
+                }
+            }
+            
+            return validMoves;
+        }
+
+        // 有効な手かどうかの判定
+        function isValidMove(row, col, player) {
+            // 既に石が置かれている場合は無効
+            if (board[row][col] !== EMPTY) return false;
+            
+            const opponent = player === BLACK ? WHITE : BLACK;
+            
+            // 8方向をチェック
+            for (const [dRow, dCol] of directions) {
+                let r = row + dRow;
+                let c = col + dCol;
+                
+                // 相手の石が隣接しているかチェック
+                if (r >= 0 && r < 8 && c >= 0 && c < 8 && board[r][c] === opponent) {
+                    // その方向に進んで自分の石があるかチェック
+                    r += dRow;
+                    c += dCol;
+                    
+                    while (r >= 0 && r < 8 && c >= 0 && c < 8) {
+                        if (board[r][c] === EMPTY) break;
+                        if (board[r][c] === player) return true;
+                        
+                        r += dRow;
+                        c += dCol;
+                    }
+                }
+            }
+            
+            return false;
+        }
+
+        // 石を置く
+        function makeMove(row, col) {
+            if (gameOver || currentPlayer !== BLACK || !isValidMove(row, col, currentPlayer)) return;
+            
+            // 石を置く
+            placeDisc(row, col, currentPlayer);
+            
+            // ターン交代
+            currentPlayer = WHITE;
+            updateStatus();
+            renderBoard();
+            
+            // AIのターン
+            setTimeout(aiMove, 500);
+        }
+
+        // 石を置いて挟まれた石をひっくり返す
+        function placeDisc(row, col, player) {
+            board[row][col] = player;
+            const opponent = player === BLACK ? WHITE : BLACK;
+            
+            // 8方向をチェック
+            for (const [dRow, dCol] of directions) {
+                let r = row + dRow;
+                let c = col + dCol;
+                const flips = [];
+                
+                // 相手の石が隣接しているかチェック
+                while (r >= 0 && r < 8 && c >= 0 && c < 8 && board[r][c] === opponent) {
+                    flips.push({ row: r, col: c });
+                    r += dRow;
+                    c += dCol;
+                    
+                    // 自分の石があればひっくり返す
+                    if (r >= 0 && r < 8 && c >= 0 && c < 8 && board[r][c] === player) {
+                        for (const flip of flips) {
+                            board[flip.row][flip.col] = player;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        // AIの手
+        function aiMove() {
+            if (gameOver) return;
+            
+            const validMoves = getValidMoves(WHITE);
+            
+            if (validMoves.length === 0) {
+                // AIが打てない場合
+                if (getValidMoves(BLACK).length === 0) {
+                    // プレイヤーも打てない場合はゲーム終了
+                    gameOver = true;
+                    updateStatus();
+                } else {
+                    // プレイヤーのターンに戻る
+                    currentPlayer = BLACK;
+                    updateStatus();
+                    renderBoard();
+                }
+                return;
+            }
+            
+            // 最も多くの石をひっくり返せる手を選ぶ（貪欲法）
+            let bestMove = null;
+            let maxFlips = -1;
+            
+            for (const move of validMoves) {
+                const flips = countFlips(move.row, move.col, WHITE);
+                if (flips > maxFlips) {
+                    maxFlips = flips;
+                    bestMove = move;
+                }
+            }
+            
+            // 最適な手を打つ
+            if (bestMove) {
+                placeDisc(bestMove.row, bestMove.col, WHITE);
+            }
+            
+            // ターン交代
+            currentPlayer = BLACK;
+            
+            // プレイヤーが打てるかチェック
+            if (getValidMoves(BLACK).length === 0) {
+                if (getValidMoves(WHITE).length === 0) {
+                    // 両者打てない場合はゲーム終了
+                    gameOver = true;
+                } else {
+                    // AIのターンに戻る
+                    currentPlayer = WHITE;
+                    updateStatus();
+                    renderBoard();
+                    setTimeout(aiMove, 500);
+                    return;
+                }
+            }
+            
+            updateStatus();
+            renderBoard();
+        }
+
+        // ひっくり返せる石の数を数える
+        function countFlips(row, col, player) {
+            let count = 0;
+            const opponent = player === BLACK ? WHITE : BLACK;
+            
+            // 8方向をチェック
+            for (const [dRow, dCol] of directions) {
+                let r = row + dRow;
+                let c = col + dCol;
+                let flips = 0;
+                
+                // 相手の石が隣接しているかチェック
+                while (r >= 0 && r < 8 && c >= 0 && c < 8 && board[r][c] === opponent) {
+                    flips++;
+                    r += dRow;
+                    c += dCol;
+                    
+                    // 自分の石があればカウント
+                    if (r >= 0 && r < 8 && c >= 0 && c < 8 && board[r][c] === player) {
+                        count += flips;
+                        break;
+                    }
+                }
+            }
+            
+            return count;
+        }
+
+        // リスタートボタン
+        document.getElementById('restart').addEventListener('click', initGame);
+
+        // ゲーム開始
+        initGame();
+    </script>
+</body>
+</html>

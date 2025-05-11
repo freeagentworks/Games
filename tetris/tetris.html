@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シンプルテトリス</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #game {
+            display: grid;
+            grid-template-rows: repeat(20, 30px);
+            grid-template-columns: repeat(10, 30px);
+            gap: 1px;
+            background: #333;
+            border: 3px solid #333;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .cell.cyan { background-color: cyan; }
+        .cell.yellow { background-color: yellow; }
+        .cell.purple { background-color: purple; }
+        .cell.green { background-color: green; }
+        .cell.red { background-color: red; }
+        .cell.blue { background-color: blue; }
+        .cell.orange { background-color: orange; }
+        #score {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>シンプルテトリス</h1>
+    <div class="game-container">
+        <div id="game"></div>
+        <div id="score">スコア: 0</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
