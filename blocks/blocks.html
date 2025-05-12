@@ -2,7 +2,9 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>ブロック崩しゲーム</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,7 +15,7 @@
     </div>
     <div class="controls">
         <button id="startButton">ゲームスタート</button>
-        <p>操作方法: マウスを左右に動かしてパドルを操作します</p>
+        <p class="instruction">操作方法: <span class="desktop-only">マウスを左右に動かして</span><span class="mobile-only">画面を左右にタッチして</span>パドルを操作します</p>
     </div>
     <script src="game.js"></script>
 </body>

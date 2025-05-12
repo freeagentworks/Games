@@ -107,6 +107,11 @@ header h1 {
     color: var(--accent-color);
 }
 
+.poker-icon {
+    background-color: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+}
+
 .game-card h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;

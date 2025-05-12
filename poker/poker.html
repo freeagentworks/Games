@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>5カードドローポーカー</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>カードドローポーカー</h1>
+        
+        <div class="game-area">
+            <div class="player-area">
+                <h2>あなたの手札</h2>
+                <div id="player-hand" class="hand"></div>
+                <div id="player-rank" class="rank"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="deal-btn">カードを配る</button>
+                <button id="draw-btn" disabled>カードを交換</button>
+                <button id="new-game-btn" disabled>新しいゲーム</button>
+                <div id="game-message"></div>
+            </div>
+            
+            <div class="player-area">
+                <h2>CPUの手札</h2>
+                <div id="cpu-hand" class="hand"></div>
+                <div id="cpu-rank" class="rank"></div>
+            </div>
+        </div>
+        
+        <div class="rules">
+            <h3>役の強さ (強い順)</h3>
+            <ol>
+                <li>ロイヤルフラッシュ (Royal Flush)</li>
+                <li>ストレートフラッシュ (Straight Flush)</li>
+                <li>フォーカード (Four of a Kind)</li>
+                <li>フルハウス (Full House)</li>
+                <li>フラッシュ (Flush)</li>
+                <li>ストレート (Straight)</li>
+                <li>スリーカード (Three of a Kind)</li>
+                <li>ツーペア (Two Pair)</li>
+                <li>ワンペア (One Pair)</li>
+                <li>ハイカード (High Card)</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script src="poker.js"></script>
+</body>
+</html>

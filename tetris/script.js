@@ -23,6 +23,10 @@ let gameInterval = null;
 // Get DOM elements
 const gameElement = document.getElementById('game');
 const scoreElement = document.getElementById('score');
+const leftButton = document.getElementById('left-button');
+const rightButton = document.getElementById('right-button');
+const rotateButton = document.getElementById('rotate-button');
+const downButton = document.getElementById('down-button');
 
 // Initialize the game grid
 function createGrid() {
@@ -235,3 +239,32 @@ document.addEventListener('keydown', (e) => {
 
 // Start the game
 startGame();
+
+// Add event listeners for buttons
+if (leftButton) {
+    leftButton.addEventListener('click', () => {
+        if (!gameInterval) return;
+        move(-1);
+    });
+}
+
+if (rightButton) {
+    rightButton.addEventListener('click', () => {
+        if (!gameInterval) return;
+        move(1);
+    });
+}
+
+if (rotateButton) {
+    rotateButton.addEventListener('click', () => {
+        if (!gameInterval) return;
+        rotate();
+    });
+}
+
+if (downButton) {
+    downButton.addEventListener('click', () => {
+        if (!gameInterval) return;
+        drop();
+    });
+}

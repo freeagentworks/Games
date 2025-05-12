@@ -1,0 +1,251 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #1a5c2f;
+    color: white;
+    padding: 10px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+h1 {
+    text-align: center;
+    margin: 15px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.5rem;
+}
+
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.player-area {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.player-area h2 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.hand {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+    min-height: 120px;
+}
+
+.card {
+    width: 60px;
+    height: 84px;
+    background-color: white;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3px;
+    color: black;
+    font-weight: bold;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-size: 0.8rem;
+}
+
+.card.selected {
+    transform: translateY(-10px);
+    box-shadow: 0 0 8px gold;
+}
+
+.card.back {
+    background-image: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);
+    color: transparent;
+}
+
+.card-top, .card-bottom {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.card-bottom {
+    transform: rotate(180deg);
+}
+
+.suit {
+    font-size: 1.2rem;
+}
+
+.rank {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    min-height: 25px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    background-color: #f0c14b;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 1 1 45%;
+    min-width: 120px;
+    margin: 3px;
+}
+
+button:hover {
+    background-color: #ddb347;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#game-message {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-height: 30px;
+    width: 100%;
+}
+
+.red {
+    color: #d40000;
+}
+
+.black {
+    color: #000000;
+}
+
+.rules {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.rules h3 {
+    margin-bottom: 10px;
+}
+
+.rules ol {
+    padding-left: 25px;
+}
+
+.rules li {
+    margin-bottom: 5px;
+}
+
+/* Tablet and larger */
+@media (min-width: 600px) {
+    .card {
+        width: 80px;
+        height: 112px;
+        padding: 5px;
+        font-size: 1rem;
+    }
+    
+    .hand {
+        gap: 8px;
+        min-height: 140px;
+    }
+    
+    button {
+        flex: 0 1 auto;
+        min-width: 140px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+    .game-area {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .player-area {
+        width: 45%;
+        padding: 15px;
+    }
+    
+    .card {
+        width: 100px;
+        height: 140px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 10px;
+        flex: 0 0 200px;
+    }
+    
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+    
+    .card {
+        width: 110px;
+        height: 154px;
+    }
+}
+
+/* Very small devices */
+@media (max-width: 360px) {
+    .card {
+        width: 50px;
+        height: 70px;
+        font-size: 0.7rem;
+    }
+    
+    .suit {
+        font-size: 0.9rem;
+    }
+    
+    button {
+        min-width: 100px;
+        padding: 6px 8px;
+        font-size: 0.8rem;
+    }
+}
