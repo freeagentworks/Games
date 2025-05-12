@@ -5,6 +5,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const startButton = document.getElementById('startButton');
     
+    // デバイスチェック
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // キャンバスのサイズ調整
+    function resizeCanvas() {
+        const containerWidth = canvas.parentElement.clientWidth;
+        // アスペクト比を維持
+        const aspectRatio = canvas.width / canvas.height;
+        const newWidth = Math.min(containerWidth, 800);
+        const newHeight = newWidth / aspectRatio;
+        
+        canvas.style.width = newWidth + 'px';
+        canvas.style.height = newHeight + 'px';
+        
+        // キャンバスのスケーリングファクター
+        canvas.scaleX = canvas.width / newWidth;
+        canvas.scaleY = canvas.height / newHeight;
+    }
+    
+    // 初回リサイズ
+    resizeCanvas();
+    
+    // ウィンドウサイズ変更時のリサイズ
+    window.addEventListener('resize', resizeCanvas);
+    
     // ゲーム変数
     let gameRunning = false;
     let score = 0;
@@ -22,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // パドルの設定
     const paddle = {
-        width: 100,
+        width: isMobile ? 120 : 100, // モバイルではパドルを少し広くする
         height: 15,
         x: (canvas.width - 100) / 2,
         color: '#4CAF50'
@@ -71,7 +96,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // マウスの動きを追跡
     function mouseMoveHandler(e) {
-        const relativeX = e.clientX - canvas.offsetLeft;
+        const canvasRect = canvas.getBoundingClientRect();
+        // クライアント座標をキャンバス座標に変換
+        const scaleX = canvas.width / canvasRect.width;
+        
+        let relativeX;
+        if (e.type.startsWith('touch')) {
+            // タッチイベントの場合
+            relativeX = (e.touches[0].clientX - canvasRect.left) * scaleX;
+        } else {
+            // マウスイベントの場合
+            relativeX = (e.clientX - canvasRect.left) * scaleX;
+        }
+        
         if (relativeX > 0 && relativeX < canvas.width) {
             paddle.x = relativeX - paddle.width / 2;
             
@@ -82,6 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 paddle.x = canvas.width - paddle.width;
             }
         }
+    }
+    
+    // タッチ移動の追跡
+    function touchMoveHandler(e) {
+        e.preventDefault(); // スクロールを防止
+        mouseMoveHandler(e);
     }
     
     // 衝突検出
@@ -242,7 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // イベントリスナー
+    // PC用のマウスイベント
     canvas.addEventListener('mousemove', mouseMoveHandler);
+    
+    // モバイル用のタッチイベント
+    canvas.addEventListener('touchmove', touchMoveHandler, { passive: false });
+    canvas.addEventListener('touchstart', touchMoveHandler, { passive: false });
     
     startButton.addEventListener('click', () => {
         if (!gameRunning) {
@@ -253,6 +301,13 @@ document.addEventListener('DOMContentLoaded', () => {
             gameRunning = true;
         }
     });
+    
+    // モバイルでのダブルタップによるズームを防止
+    document.addEventListener('touchend', (e) => {
+        if (e.target === canvas) {
+            e.preventDefault();
+        }
+    }, { passive: false });
     
     // ゲームの初期化と開始
     initBlocks();
