@@ -12,7 +12,7 @@ const config = {
     bulletWidth: 3,
     bulletHeight: 15,
     bulletSpeed: 7,
-    bulletCooldown: 500, // ミリ秒
+    bulletCooldown: 250, // ミリ秒 - 発射速度を上げるために短縮
     colors: ['#FF5555', '#50FA7B', '#FFB86C', '#8BE9FD', '#BD93F9']
 };
 
@@ -33,7 +33,10 @@ let game = {
         left: false,
         right: false,
         space: false
-    }
+    },
+    isMobile: false,
+    touchStartX: 0,
+    autoFire: false
 };
 
 // ゲームの初期化
@@ -44,6 +47,13 @@ function initGame() {
     game.isGameOver = false;
     game.isGameRunning = true;
     game.direction = 1;
+    
+    // モバイルデバイスの検出
+    game.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    game.autoFire = game.isMobile; // モバイルでは自動発射モードをオン
+    
+    // キャンバスのサイズをウィンドウに合わせる
+    resizeCanvas();
     
     // スコア表示の更新
     document.getElementById('score').textContent = game.score;
@@ -74,6 +84,31 @@ function initGame() {
     game.bullets = [];
     game.enemyBullets = [];
     
+    // タッチイベントの設定（モバイル用）
+    game.canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // デフォルトの動作を防止
+        const touch = e.touches[0];
+        game.touchStartX = touch.clientX;
+    }, { passive: false });
+
+    game.canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // デフォルトの動作を防止
+        if (game.isGameRunning && e.touches.length > 0) {
+            const touch = e.touches[0];
+            const moveX = touch.clientX - game.touchStartX;
+            
+            // 移動距離に応じてプレイヤーを移動
+            if (moveX > 5 && game.player.x < game.canvas.width - config.playerWidth) {
+                game.player.x += config.playerSpeed * 1.5;
+            } else if (moveX < -5 && game.player.x > 0) {
+                game.player.x -= config.playerSpeed * 1.5;
+            }
+            
+            // 新しい位置を記録
+            game.touchStartX = touch.clientX;
+        }
+    }, { passive: false });
+    
     // ゲームループの開始
     requestAnimationFrame(gameLoop);
 }
@@ -92,6 +127,43 @@ function gameLoop() {
     }
 }
 
+// キャンバスのリサイズ
+function resizeCanvas() {
+    const container = document.querySelector('.game-container');
+    const containerWidth = container.clientWidth;
+    
+    // キャンバスの幅を調整（最大600px）
+    const canvasWidth = Math.min(600, containerWidth - 20);
+    const scale = canvasWidth / 600;
+    
+    // 高さは幅に合わせて比率を維持
+    const canvasHeight = 500 * scale;
+    
+    game.canvas.width = canvasWidth;
+    game.canvas.height = canvasHeight;
+    
+    // ゲーム要素のサイズも調整
+    if (game.isMobile) {
+        // モバイル向けに要素を少し大きくする
+        config.playerWidth = 50 * scale * 1.2;
+        config.playerHeight = 30 * scale * 1.2;
+        config.invaderWidth = 40 * scale * 1.2;
+        config.invaderHeight = 30 * scale * 1.2;
+    } else {
+        config.playerWidth = 50 * scale;
+        config.playerHeight = 30 * scale;
+        config.invaderWidth = 40 * scale;
+        config.invaderHeight = 30 * scale;
+    }
+    
+    // プレイヤーの位置を調整
+    if (game.player) {
+        game.player.width = config.playerWidth;
+        game.player.height = config.playerHeight;
+        game.player.y = game.canvas.height - config.playerHeight - 20;
+    }
+}
+
 // ゲーム状態の更新
 function update() {
     // プレイヤーの移動
@@ -102,8 +174,8 @@ function update() {
         game.player.x += config.playerSpeed;
     }
     
-    // 弾の発射
-    if (game.keys.space) {
+    // 弾の発射（キーボードまたは自動発射）
+    if (game.keys.space || game.autoFire) {
         const currentTime = Date.now();
         if (currentTime - game.lastBulletTime > config.bulletCooldown) {
             game.bullets.push({
@@ -305,4 +377,23 @@ document.addEventListener('keyup', (e) => {
 // スタートボタンのイベント設定
 document.getElementById('startButton').addEventListener('click', () => {
     initGame();
+});
+
+
+// ウィンドウリサイズイベントの設定
+window.addEventListener('resize', () => {
+    if (game.canvas) {
+        resizeCanvas();
+    }
+});
+
+// 初期ロード時にもリサイズを適用
+window.addEventListener('load', () => {
+    // モバイルデバイスの場合、ゲーム説明を表示
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        const controls = document.querySelector('.controls p');
+        if (controls) {
+            controls.textContent = '操作方法: 画面を左右にスワイプして移動、自動発射モード';
+        }
+    }
 });

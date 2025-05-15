@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>ブロック崩しゲーム</title>
+    <title>モグラたたきゲーム</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <a href="../index.html" class="back-button">← 戻る</a>
-    <h1>カラフルブロック崩し</h1>
+    <h1>モグラたたきゲーム</h1>
     <div class="game-container">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
+        <div class="game-info">
+            <div class="score">スコア: <span id="score">0</span></div>
+            <div class="time">残り時間: <span id="time">30</span>秒</div>
+        </div>
     </div>
     <div class="controls">
         <button id="startButton">ゲームスタート</button>
-        <p class="instruction">操作方法: <span class="desktop-only">マウスを左右に動かして</span><span class="mobile-only">画面を左右にタッチして</span>パドルを操作します</p>
+        <p class="instruction">モグラをクリック（タップ）して叩こう！</p>
     </div>
     <script src="game.js"></script>
 </body>

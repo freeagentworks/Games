@@ -112,6 +112,11 @@ header h1 {
     color: #9b59b6;
 }
 
+.whackmole-icon {
+    background-color: rgba(121, 85, 72, 0.2);
+    color: #795548;
+}
+
 .game-card h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
@@ -140,6 +145,28 @@ footer {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* 戻るボタン - 全ゲーム共通 */
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: auto;
+    z-index: 10;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 /* レスポンシブ対応 */
