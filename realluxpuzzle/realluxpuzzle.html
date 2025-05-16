@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リラックスパズル - 空の旅を楽しむパズルゲーム</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="短時間でリラックスできる、飛行機の窓から見える景色をテーマにしたスライドパズルゲーム">
+</head>
+<body>
+    <a href="../index.html" class="back-button">← 戻る</a>
+    
+    <div class="game-container">
+        <div class="airplane-window">
+            <div class="window-frame">
+                <h1>リラックスパズル</h1>
+                
+                <div id="game-menu" class="game-section active">
+                    <div class="menu-card">
+                        <h2>難易度を選択</h2>
+                        <div class="difficulty-selector">
+                            <button data-size="3" class="difficulty-btn active">初級 (3×3)</button>
+                            <button data-size="4" class="difficulty-btn">中級 (4×4)</button>
+                            <button data-size="5" class="difficulty-btn">上級 (5×5)</button>
+                        </div>
+                        
+                        <h2>テーマを選択</h2>
+                        <div class="theme-selector">
+                            <button data-theme="daysky" class="theme-btn active">昼の空</button>
+                            <button data-theme="sunset" class="theme-btn">夕暮れ</button>
+                            <button data-theme="nightsky" class="theme-btn">夜空</button>
+                        </div>
+                        
+                        <h2>BGMを選択</h2>
+                        <div class="music-selector">
+                            <button data-music="piano" class="music-btn active">穏やかなピアノ</button>
+                            <button data-music="nature" class="music-btn">自然の風音</button>
+                            <button data-music="cabin" class="music-btn">機内の環境音</button>
+                            <button data-music="none" class="music-btn">なし</button>
+                        </div>
+                        
+                        <button id="start-game" class="main-btn">ゲームスタート</button>
+                    </div>
+                </div>
+                
+                <div id="puzzle-game" class="game-section">
+                    <div class="game-controls">
+                        <div class="moves-counter">移動回数: <span id="moves">0</span></div>
+                        <div class="time-counter">経過時間: <span id="time">00:00</span></div>
+                        <button id="hint-btn" class="control-btn">ヒント</button>
+                        <button id="shuffle-btn" class="control-btn">シャッフル</button>
+                        <button id="return-menu" class="control-btn">メニューに戻る</button>
+                    </div>
+                    
+                    <div id="puzzle-board" class="puzzle-board"></div>
+                    
+                    <div class="music-controls">
+                        <button id="mute-btn" class="control-btn">音楽: オン</button>
+                    </div>
+                </div>
+                
+                <div id="puzzle-complete" class="game-section">
+                    <div class="complete-card">
+                        <h2>パズル完成！</h2>
+                        <div id="complete-image" class="complete-image"></div>
+                        <p id="completion-message">素晴らしい！リラックスできましたね。</p>
+                        <div class="stats">
+                            <p>移動回数: <span id="final-moves">0</span></p>
+                            <p>クリア時間: <span id="final-time">00:00</span></p>
+                            <p>獲得ポイント: <span id="earned-points">0</span></p>
+                        </div>
+                        <div class="action-buttons">
+                            <button id="play-again" class="main-btn">もう一度遊ぶ</button>
+                            <button id="save-album" class="main-btn">アルバムに保存</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="album-view" class="game-section">
+                    <h2>機内アルバム</h2>
+                    <div id="album-grid" class="album-grid">
+                        <!-- アルバムの内容はJavaScriptで動的に生成 -->
+                    </div>
+                    <button id="close-album" class="main-btn">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <h3>遊び方</h3>
+        <p>ピースをクリック（タッチ）して動かし、美しい景色のパズルを完成させましょう。</p>
+        <p>リラックスして、自分のペースでお楽しみください。</p>
+    </div>
+    
+    <audio id="background-music" loop></audio>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+@import url('../style.css');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #4a85b9;
+    --secondary-color: #6ab7e2;
+    --accent-color: #f5c542;
+    --light-color: #e6f3ff;
+    --dark-color: #245885;
+    --window-border: #a0c1dd;
+    --shadow-color: rgba(0, 20, 40, 0.3);
+}
+
+body {
+    font-family: 'Comfortaa', sans-serif;
+    background: linear-gradient(135deg, #b3d8ff 0%, #8eb8e5 100%);
+    color: var(--dark-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.airplane-window {
+    background-color: #f0f5fa;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px var(--shadow-color);
+    overflow: hidden;
+    position: relative;
+}
+
+.window-frame {
+    border: 15px solid var(--window-border);
+    border-radius: 20px;
+    padding: 20px;
+    background: linear-gradient(to bottom, #cce4ff, #e6f2ff);
+    position: relative;
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: var(--dark-color);
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+.game-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.game-section.active {
+    display: block;
+    opacity: 1;
+}
+
+/* メニュー画面のスタイル */
+.menu-card {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.difficulty-selector,
+.theme-selector,
+.music-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.difficulty-btn,
+.theme-btn,
+.music-btn,
+.control-btn {
+    background-color: var(--light-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 8px 15px;
+    color: var(--dark-color);
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-btn:hover,
+.theme-btn:hover,
+.music-btn:hover,
+.control-btn:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.difficulty-btn.active,
+.theme-btn.active,
+.music-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.main-btn {
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 25px;
+    color: var(--dark-color);
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 20px auto 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-btn:hover {
+    background-color: #ffd966;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* パズルゲーム画面のスタイル */
+.game-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.moves-counter,
+.time-counter {
+    background-color: var(--light-color);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--dark-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.puzzle-board {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    margin: 0 auto 20px;
+    position: relative;
+    background-color: var(--window-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.puzzle-piece {
+    position: absolute;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;
+}
+
+.puzzle-piece:hover {
+    transform: scale(0.98);
+}
+
+.puzzle-piece:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.puzzle-piece.empty {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    cursor: default;
+}
+
+.puzzle-piece.movable {
+    box-shadow: 0 0 8px 2px rgba(106, 183, 226, 0.8);
+    animation: pulse 1.5s infinite alternate;
+    z-index: 2;
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 8px 2px rgba(106, 183, 226, 0.5); }
+    to { box-shadow: 0 0 12px 4px rgba(106, 183, 226, 0.8); }
+}
+
+.music-controls {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* 完成画面のスタイル */
+.complete-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.complete-image {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    margin: 15px auto;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stats {
+    background-color: var(--light-color);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+.stats p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* アルバム画面のスタイル */
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.album-item {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.album-item:hover {
+    transform: translateY(-5px);
+}
+
+.album-image {
+    width: 100%;
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+}
+
+.album-info {
+    padding: 10px;
+    font-size: 0.8rem;
+}
+
+.album-info p {
+    margin: 3px 0;
+}
+
+/* インストラクション */
+.instructions {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.instructions h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.instructions p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fadeIn {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.slideUp {
+    animation: slideUp 0.5s ease forwards;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+    }
+    
+    .window-frame {
+        padding: 15px;
+        border-width: 10px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.2rem;
+    }
+    
+    .puzzle-board {
+        height: 350px;
+    }
+    
+    .control-btn, .difficulty-btn, .theme-btn, .music-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .main-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .window-frame {
+        padding: 10px;
+        border-width: 8px;
+    }
+    
+    .puzzle-board {
+        height: 300px;
+        max-width: 300px;
+        margin-bottom: 15px;
+    }
+    
+    .puzzle-piece {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: none;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .album-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    
+    /* タッチ領域を大きくするための調整 */
+    .difficulty-btn, .theme-btn, .music-btn, .control-btn {
+        min-height: 44px; /* iOS向けタップ領域の最小サイズ */
+        padding: 8px 12px;
+    }
+    
+    .main-btn {
+        min-height: 44px;
+        width: 100%;
+    }
+    
+    .game-controls {
+        margin-bottom: 10px;
+    }
+}

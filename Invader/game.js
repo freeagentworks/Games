@@ -1,7 +1,7 @@
 // ゲームの設定
 const config = {
     invaderRows: 5,
-    invaderCols: 10,
+    invaderCols: 6,
     invaderWidth: 40,
     invaderHeight: 30,
     invaderSpeed: 2,
@@ -137,7 +137,7 @@ function resizeCanvas() {
     const scale = canvasWidth / 600;
     
     // 高さは幅に合わせて比率を維持
-    const canvasHeight = 500 * scale;
+    const canvasHeight = 700 * scale;
     
     game.canvas.width = canvasWidth;
     game.canvas.height = canvasHeight;
