@@ -203,10 +203,12 @@ h2 {
 }
 
 .puzzle-piece.empty {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-    cursor: default;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    cursor: default !important;
+    pointer-events: none !important;
+    opacity: 0.2;
 }
 
 .puzzle-piece.movable {

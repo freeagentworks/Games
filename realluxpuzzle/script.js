@@ -251,8 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function createPuzzle() {
         const size = gameState.difficulty;
         elements.puzzleBoard.innerHTML = '';
-        elements.puzzleBoard.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-        elements.puzzleBoard.style.gridTemplateRows = `repeat(${size}, 1fr)`;
         
         const pieceWidth = 100 / size;
         const pieceHeight = 100 / size;
@@ -260,25 +258,39 @@ document.addEventListener('DOMContentLoaded', () => {
         // パズルの状態を初期化
         gameState.puzzle = [];
         
+        // 右下を空きマスに設定（一般的なスライドパズルの初期状態）
+        const emptyRow = size - 1;
+        const emptyCol = size - 1;
+        gameState.emptyCell = { row: emptyRow, col: emptyCol };
+        
+        // 全てのピースを作成（空きマスを含む）
         for (let row = 0; row < size; row++) {
             gameState.puzzle[row] = [];
             for (let col = 0; col < size; col++) {
                 const pieceNumber = row * size + col;
-                const isLastPiece = (row === size - 1 && col === size - 1);
+                const isEmpty = (row === emptyRow && col === emptyCol);
                 
-                // 空のセル（右下）を除いてピースを作成
-                if (!isLastPiece) {
-                    const piece = document.createElement('div');
-                    piece.className = 'puzzle-piece';
-                    piece.dataset.row = row;
-                    piece.dataset.col = col;
-                    
-                    // ピースのサイズと位置を設定
-                    piece.style.width = `calc(${pieceWidth}% - 4px)`;
-                    piece.style.height = `calc(${pieceHeight}% - 4px)`;
-                    piece.style.left = `${col * pieceWidth}%`;
-                    piece.style.top = `${row * pieceHeight}%`;
-                    piece.style.margin = '2px';
+                // 論理的な状態を設定
+                if (isEmpty) {
+                    gameState.puzzle[row][col] = -1; // 空きマスは-1で表現
+                } else {
+                    gameState.puzzle[row][col] = pieceNumber;
+                }
+                
+                // 全てのセルに対してDOM要素を作成（空きマスも含む）
+                const piece = document.createElement('div');
+                piece.className = isEmpty ? 'puzzle-piece empty' : 'puzzle-piece';
+                piece.dataset.row = row;
+                piece.dataset.col = col;
+                
+                // ピースのサイズと位置を設定
+                piece.style.width = `calc(${pieceWidth}% - 4px)`;
+                piece.style.height = `calc(${pieceHeight}% - 4px)`;
+                piece.style.left = `${col * pieceWidth}%`;
+                piece.style.top = `${row * pieceHeight}%`;
+                piece.style.margin = '2px';
+                
+                if (!isEmpty) {
                     piece.style.cursor = 'pointer';
                     piece.style.touchAction = 'none'; // タッチデバイス用
                     
@@ -292,21 +304,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         movePiece(row, col);
                     });
                     
-                    // タッチイベントを追加（個別のピースにも）
+                    // タッチイベントを追加
                     piece.addEventListener('touchstart', (e) => {
                         e.preventDefault();
                         movePiece(row, col);
                     }, { passive: false });
-                    
-                    elements.puzzleBoard.appendChild(piece);
-                    gameState.puzzle[row][col] = pieceNumber;
                 } else {
-                    // 空のセル
-                    gameState.puzzle[row][col] = -1;
-                    gameState.emptyCell = { row, col };
+                    // 空きマスは背景を透明に
+                    piece.style.backgroundColor = 'transparent';
+                    piece.style.border = 'none';
+                    piece.style.boxShadow = 'none';
                 }
+                
+                elements.puzzleBoard.appendChild(piece);
             }
         }
+        
+        // 動かせるピースをハイライト
+        updateMovablePieces();
     }
 
     // パズルをシャッフル
@@ -318,49 +333,33 @@ document.addEventListener('DOMContentLoaded', () => {
             createPuzzle();
         }
         
-        // より効果的なシャッフル方法を実装
-        // 1. 完全にランダムな配置を生成する
-        const totalPieces = size * size;
-        const shuffledIndices = [];
+        // シャッフル方法を改善
+        // ランダムな移動を多数回行うことで自然なシャッフルを実現
+        const moveCount = size * size * 20; // 十分な回数のランダム移動
         
-        // 全ピースの番号を配列に追加（最後の-1は空きマス）
-        for (let i = 0; i < totalPieces - 1; i++) {
-            shuffledIndices.push(i);
-        }
-        shuffledIndices.push(-1); // 空きマス
-        
-        // フィッシャー–イェーツシャッフル
-        for (let i = shuffledIndices.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffledIndices[i], shuffledIndices[j]] = [shuffledIndices[j], shuffledIndices[i]];
-        }
-        
-        // 解けないパズルを避けるためのチェックと調整
-        if (!isSolvable(shuffledIndices, size)) {
-            // 解決不可能な場合、最初の2つの要素を交換（空きマスではない）
-            let idx1 = 0;
-            let idx2 = 1;
+        for (let i = 0; i < moveCount; i++) {
+            // 現在の空きマスの隣接セルからランダムに選択
+            const { row, col } = gameState.emptyCell;
+            const possibleMoves = [];
             
-            // 空きマスを避ける
-            if (shuffledIndices[idx1] === -1) idx1 = 2;
-            if (shuffledIndices[idx2] === -1) idx2 = 2;
+            // 上下左右の隣接セルをチェック
+            if (row > 0) possibleMoves.push({ row: row - 1, col });
+            if (row < size - 1) possibleMoves.push({ row: row + 1, col });
+            if (col > 0) possibleMoves.push({ row, col: col - 1 });
+            if (col < size - 1) possibleMoves.push({ row, col: col + 1 });
             
-            // 要素を交換
-            [shuffledIndices[idx1], shuffledIndices[idx2]] = [shuffledIndices[idx2], shuffledIndices[idx1]];
-        }
-        
-        // パズルの状態を更新
-        let emptyPosition = shuffledIndices.indexOf(-1);
-        gameState.emptyCell = {
-            row: Math.floor(emptyPosition / size),
-            col: emptyPosition % size
-        };
-        
-        // パズル配列にシャッフルした値を設定
-        for (let i = 0; i < totalPieces; i++) {
-            const row = Math.floor(i / size);
-            const col = i % size;
-            gameState.puzzle[row][col] = shuffledIndices[i];
+            // ランダムな隣接セルを選択して移動
+            if (possibleMoves.length > 0) {
+                const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                
+                // ピースの値を交換（実際の移動）
+                const temp = gameState.puzzle[row][col];
+                gameState.puzzle[row][col] = gameState.puzzle[randomMove.row][randomMove.col];
+                gameState.puzzle[randomMove.row][randomMove.col] = temp;
+                
+                // 空きマスの位置を更新
+                gameState.emptyCell = { row: randomMove.row, col: randomMove.col };
+            }
         }
         
         // 現在の配置からピースの位置を再計算する
@@ -409,33 +408,63 @@ document.addEventListener('DOMContentLoaded', () => {
         const size = gameState.difficulty;
         const pieceWidth = 100 / size;
         const pieceHeight = 100 / size;
-        const pieces = document.querySelectorAll('.puzzle-piece');
         
-        // 各ピースに対応する番号を特定し、正しい位置に配置
-        pieces.forEach(piece => {
-            const row = parseInt(piece.dataset.row);
-            const col = parseInt(piece.dataset.col);
-            const pieceNumber = gameState.puzzle[row][col];
-            
-            if (pieceNumber !== -1) {
-                // このピースが表示すべき元の画像の位置
-                const originalRow = Math.floor(pieceNumber / size);
-                const originalCol = pieceNumber % size;
+        // 全てのピースを一度削除
+        elements.puzzleBoard.innerHTML = '';
+        
+        // 現在の状態に基づいて再配置
+        for (let row = 0; row < size; row++) {
+            for (let col = 0; col < size; col++) {
+                const pieceNumber = gameState.puzzle[row][col];
+                const isEmpty = (pieceNumber === -1);
                 
-                // 背景位置を調整して、正しい画像の部分を表示
-                piece.style.backgroundPosition = `-${originalCol * 100}% -${originalRow * 100}%`;
+                // ピース要素を作成
+                const piece = document.createElement('div');
+                piece.className = isEmpty ? 'puzzle-piece empty' : 'puzzle-piece';
+                piece.dataset.row = row;
+                piece.dataset.col = col;
                 
-                // ピースの位置
+                // ピースのサイズと位置を設定
+                piece.style.width = `calc(${pieceWidth}% - 4px)`;
+                piece.style.height = `calc(${pieceHeight}% - 4px)`;
                 piece.style.left = `${col * pieceWidth}%`;
                 piece.style.top = `${row * pieceHeight}%`;
+                piece.style.margin = '2px';
                 
-                // 空きマスの場合は非表示
-                piece.style.visibility = 'visible';
-            } else {
-                // 空きマスの場合は非表示
-                piece.style.visibility = 'hidden';
+                if (!isEmpty) {
+                    piece.style.cursor = 'pointer';
+                    piece.style.touchAction = 'none';
+                    
+                    // 背景画像の位置を設定
+                    const originalRow = Math.floor(pieceNumber / size);
+                    const originalCol = pieceNumber % size;
+                    piece.style.backgroundImage = `url(${themes[gameState.theme].url})`;
+                    piece.style.backgroundSize = `${size * 100}% ${size * 100}%`;
+                    piece.style.backgroundPosition = `-${originalCol * 100}% -${originalRow * 100}%`;
+                    
+                    // クリックイベントを追加
+                    piece.addEventListener('click', () => {
+                        movePiece(row, col);
+                    });
+                    
+                    // タッチイベントを追加
+                    piece.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        movePiece(row, col);
+                    }, { passive: false });
+                } else {
+                    // 空きマスは背景を透明に
+                    piece.style.backgroundColor = 'transparent';
+                    piece.style.border = 'none';
+                    piece.style.boxShadow = 'none';
+                }
+                
+                elements.puzzleBoard.appendChild(piece);
             }
-        });
+        }
+        
+        // 動かせるピースをハイライト
+        updateMovablePieces();
     }
 
     // パズルの表示を更新
@@ -446,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 動かせるピースをハイライト
     function updateMovablePieces() {
         // すべてのピースからmovableクラスを削除
-        const pieces = document.querySelectorAll('.puzzle-piece');
+        const pieces = document.querySelectorAll('.puzzle-piece:not(.empty)');
         pieces.forEach(piece => {
             piece.classList.remove('movable');
         });
@@ -457,19 +486,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // 隣接するピースにmovableクラスを追加
         if (row > 0) {
             const piece = getPieceAt(row - 1, col);
-            if (piece) piece.classList.add('movable');
+            if (piece && !piece.classList.contains('empty')) piece.classList.add('movable');
         }
         if (row < size - 1) {
             const piece = getPieceAt(row + 1, col);
-            if (piece) piece.classList.add('movable');
+            if (piece && !piece.classList.contains('empty')) piece.classList.add('movable');
         }
         if (col > 0) {
             const piece = getPieceAt(row, col - 1);
-            if (piece) piece.classList.add('movable');
+            if (piece && !piece.classList.contains('empty')) piece.classList.add('movable');
         }
         if (col < size - 1) {
             const piece = getPieceAt(row, col + 1);
-            if (piece) piece.classList.add('movable');
+            if (piece && !piece.classList.contains('empty')) piece.classList.add('movable');
         }
     }
 
@@ -518,13 +547,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // パズルが解けたかチェック
     function checkPuzzleSolved() {
         const size = gameState.difficulty;
+        
+        // すべてのピースが正しい位置にあるかチェック（空きマスの位置は問わない）
         for (let row = 0; row < size; row++) {
             for (let col = 0; col < size; col++) {
-                // 右下の空きマスを除いてチェック
-                if (row === size - 1 && col === size - 1) {
-                    if (gameState.puzzle[row][col] !== -1) return false;
-                } else {
-                    if (gameState.puzzle[row][col] !== row * size + col) return false;
+                const pieceNumber = gameState.puzzle[row][col];
+                
+                // 空きマスはスキップ
+                if (pieceNumber === -1) continue;
+                
+                // 正しい位置にあるかチェック
+                if (pieceNumber !== row * size + col) {
+                    return false;
                 }
             }
         }
