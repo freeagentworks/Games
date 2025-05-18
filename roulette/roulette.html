@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ルーレットゲーム</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { text-align: center; background: #f5f5fa; }
+        .roulette-container { margin: 40px auto; max-width: 400px; background: #fff; border-radius: 16px; box-shadow: 0 4px 16px #0001; padding: 32px 16px; position: relative; }
+        #wheel { margin: 0 auto 24px; display: block; }
+        #spin-btn { padding: 12px 32px; font-size: 1.2rem; border-radius: 8px; border: none; background: #4a85b9; color: #fff; cursor: pointer; }
+        #spin-btn:active { background: #3570a0; }
+        #result { margin-top: 24px; font-size: 1.3rem; font-weight: bold; color: #d2691e; }
+        .main-btn { position: absolute; left: 16px; top: 16px; z-index: 10; min-width: 120px; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← 戻る</a>
+    <div class="roulette-container">
+        <h1>ルーレットゲーム</h1>
+        <canvas id="wheel" width="320" height="320"></canvas>
+        <button id="spin-btn">回す！</button>
+        <div id="result"></div>
+    </div>
+    <script src="roulette.js"></script>
+</body>
+</html>
