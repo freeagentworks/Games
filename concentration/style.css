@@ -8,17 +8,27 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    padding: 10px 20px;
+    padding: 8px 16px;
     background-color: #3498db;
     color: white;
     text-decoration: none;
     border-radius: 4px;
     font-size: 14px;
     transition: background-color 0.3s;
+    z-index: 10;
 }
 
 .return-btn:hover {
     background-color: #2980b9;
+}
+
+@media (max-width: 480px) {
+    .return-btn {
+        top: 10px;
+        left: 10px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
 }
 
 body {
@@ -36,9 +46,23 @@ body {
     position: relative;
 }
 
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+}
+
 h1 {
     margin-bottom: 20px;
     color: #2c3e50;
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
 }
 
 .game-info {
@@ -55,6 +79,17 @@ h1 {
 .score, .timer {
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+@media (max-width: 480px) {
+    .game-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .score, .timer {
+        font-size: 1rem;
+    }
 }
 
 #restart-btn {
@@ -86,11 +121,24 @@ h1 {
     }
 }
 
+@media (max-width: 480px) {
+    .game-board {
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 5px;
+    }
+}
+
 .card {
     position: relative;
     height: 120px;
     perspective: 1000px;
     cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .card {
+        height: 80px;
+    }
 }
 
 .card-inner {
@@ -133,6 +181,16 @@ h1 {
     font-size: 2.5rem;
 }
 
+@media (max-width: 480px) {
+    .card-front {
+        font-size: 1.5rem;
+    }
+    
+    .card-back {
+        font-size: 1.8rem;
+    }
+}
+
 .card.matched .card-inner {
     transform: rotateY(180deg);
 }
@@ -148,6 +206,14 @@ h1 {
     font-weight: bold;
     color: #2c3e50;
     height: 40px;
+}
+
+@media (max-width: 480px) {
+    .game-message {
+        margin-top: 15px;
+        font-size: 1.2rem;
+        height: 30px;
+    }
 }
 
 /* Card colors for different suits */

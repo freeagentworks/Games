@@ -81,6 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             cardElement.addEventListener('click', flipCard);
+            cardElement.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Prevent scrolling when touching cards
+                flipCard.call(this);
+            }, { passive: false });
             gameBoard.appendChild(cardElement);
         });
     }
@@ -134,8 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
         firstCard.removeEventListener('click', flipCard);
         secondCard.removeEventListener('click', flipCard);
         
-        firstCard.classList.add('matched');
-        secondCard.classList.add('matched');
+        // Remove touch event listeners as well
+        const removeTouch = (card) => {
+            const newCard = card.cloneNode(true);
+            card.parentNode.replaceChild(newCard, card);
+            newCard.classList.add('matched');
+            newCard.classList.add('flipped');
+        };
+        
+        removeTouch(firstCard);
+        removeTouch(secondCard);
         
         resetBoard();
     }
