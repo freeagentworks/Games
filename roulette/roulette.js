@@ -77,13 +77,9 @@ function spinWheel() {
 
 function showResult() {
     // 指針の位置（上）に来ている数字を判定
-    // 指針は上（0度）にあるので、その位置に来ているセクターを計算
-    const normalized = (currentAngle % (2 * Math.PI));
-    // 角度からインデックスを計算（時計回りに考慮）
+    const normalized = (2 * Math.PI - (currentAngle % (2 * Math.PI))) % (2 * Math.PI);
     const idx = Math.floor(normalized / anglePerSector) % numSectors;
-    // 指針の位置に来ているセクターのインデックス
-    const resultIdx = (numSectors - idx - 1 + numSectors) % numSectors;
-    resultDiv.textContent = `結果: ${sectors[resultIdx].label}`;
+    resultDiv.textContent = `結果: ${sectors[idx].label}`;
 }
 
 spinBtn.addEventListener('click', spinWheel);
