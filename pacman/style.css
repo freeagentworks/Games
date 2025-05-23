@@ -1,0 +1,66 @@
+@import url('../style.css');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #111;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  max-width: 100vw;
+}
+
+#game-canvas {
+  background: #222;
+  display: block;
+  width: 90vw;
+  max-width: 480px;
+  height: 140vw;
+  max-height: 750px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #000a;
+}
+
+#mobile-controls {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+#mobile-controls button {
+  width: 48px;
+  height: 48px;
+  margin: 4px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: #444;
+  color: #fff;
+  box-shadow: 0 2px 8px #0005;
+  transition: background 0.2s;
+}
+#mobile-controls button:active {
+  background: #ff0;
+  color: #222;
+}
+@media (max-width: 600px) {
+  #game-canvas {
+    width: 98vw;
+    height: 140vw;
+    max-width: 100vw;
+    max-height: 90vh;
+  }
+  #mobile-controls {
+    display: flex;
+  }
+}
