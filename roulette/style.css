@@ -1,3 +1,5 @@
+@import url('../style.css');
+
 body {
     background: #f5f5fa;
 }
@@ -29,19 +31,4 @@ body {
     font-weight: bold;
     color: #d2691e;
 }
-.return-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 10px 20px;
-    background: #4a85b9;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-.return-btn:hover {
-    background: #3570a0;
-}
+/* Using the standard back-button style from main style.css */

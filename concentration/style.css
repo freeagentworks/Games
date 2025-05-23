@@ -1,35 +1,12 @@
+@import url('../style.css');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.return-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 8px 16px;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: background-color 0.3s;
-    z-index: 10;
-}
-
-.return-btn:hover {
-    background-color: #2980b9;
-}
-
-@media (max-width: 480px) {
-    .return-btn {
-        top: 10px;
-        left: 10px;
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-}
+/* Using the standard back-button style from main style.css */
 
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
