@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>ブラックジャック</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="../index.html" class="back-button">← 戻る</a>
+    <h1>ブラックジャック</h1>
+    
+    <div class="game-container">
+        <div class="game-info">
+            <div class="money">所持金: <span id="money">1000</span>円</div>
+            <div class="bet-amount">賭け金: <span id="betAmount">100</span>円</div>
+        </div>
+        
+        <!-- ディーラーエリア -->
+        <div class="dealer-area">
+            <h3>ディーラー <span id="dealerScore" class="score"></span></h3>
+            <div class="cards-container" id="dealerCards"></div>
+        </div>
+        
+        <!-- プレイヤーエリア -->
+        <div class="player-area">
+            <h3>あなた <span id="playerScore" class="score"></span></h3>
+            <div class="cards-container" id="playerCards"></div>
+        </div>
+        
+        <!-- 結果表示 -->
+        <div class="result-display" id="resultDisplay">
+            <div class="result-text" id="resultText"></div>
+        </div>
+        
+        <!-- 賭け金選択 -->
+        <div class="betting-section" id="bettingSection">
+            <h3>賭け金を選択</h3>
+            <div class="bet-buttons">
+                <button class="bet-btn" data-amount="50">50円</button>
+                <button class="bet-btn active" data-amount="100">100円</button>
+                <button class="bet-btn" data-amount="200">200円</button>
+                <button class="bet-btn" data-amount="500">500円</button>
+            </div>
+        </div>
+        
+        <!-- ゲームコントロール -->
+        <div class="controls">
+            <button id="dealButton" class="primary-btn">ゲーム開始</button>
+            <button id="hitButton" class="action-btn" disabled>ヒット</button>
+            <button id="standButton" class="action-btn" disabled>スタンド</button>
+            <button id="resetButton" class="secondary-btn">リセット</button>
+        </div>
+        
+        <!-- ルール説明 -->
+        <div class="instructions">
+            <h4>ブラックジャックのルール</h4>
+            <p>• 21に近い数字を目指します（21を超えるとバスト）</p>
+            <p>• A=1または11、J・Q・K=10、その他は数字通り</p>
+            <p>• ヒット：カードを1枚追加</p>
+            <p>• スタンド：カードを追加せず勝負</p>
+            <p>• ディーラーは17以上になるまでカードを引きます</p>
+            <p>• ブラックジャック（最初の2枚で21）は1.5倍配当</p>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>

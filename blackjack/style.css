@@ -1,0 +1,505 @@
+@import url('../style.css');
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0F4C3A 0%, #2E8B57 50%, #228B22 100%);
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    touch-action: manipulation;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 2.2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: auto;
+    z-index: 10;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.game-container {
+    margin: 0 auto;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #2C3E50, #34495E);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dealer-area, .player-area {
+    margin: 25px 0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dealer-area {
+    background: linear-gradient(135deg, #FFE5E5, #FFD1D1);
+    border: 2px solid #FF6B6B;
+}
+
+.player-area {
+    background: linear-gradient(135deg, #E5F3FF, #D1E9FF);
+    border: 2px solid #4ECDC4;
+}
+
+.dealer-area h3, .player-area h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #2C3E50;
+}
+
+.score {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #2C3E50;
+    font-size: 1rem;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    min-height: 120px;
+    align-items: center;
+}
+
+.card {
+    width: 70px;
+    height: 100px;
+    background: linear-gradient(135deg, #fff, #f8f8f8);
+    border: 2px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.card.red {
+    color: #D32F2F;
+}
+
+.card.black {
+    color: #333;
+}
+
+.card.hidden {
+    background: linear-gradient(135deg, #1565C0, #0D47A1);
+    color: white;
+}
+
+.card.hidden::before {
+    content: '🂠';
+    font-size: 2rem;
+}
+
+.card:not(.hidden) .rank {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.card:not(.hidden) .suit {
+    font-size: 1.5rem;
+}
+
+.card.dealing {
+    animation: dealCard 0.5s ease-out;
+}
+
+@keyframes dealCard {
+    from {
+        transform: translateY(-100px) rotate(180deg);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.result-display {
+    margin: 20px 0;
+    padding: 15px;
+    background: linear-gradient(135deg, #E8F5E8, #D4F4D4);
+    border-radius: 10px;
+    border: 2px solid #4CAF50;
+    min-height: 60px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.result-text.win {
+    color: #4CAF50;
+}
+
+.result-text.lose {
+    color: #F44336;
+}
+
+.result-text.push {
+    color: #FF9800;
+}
+
+.betting-section {
+    margin: 25px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #FFF8E1, #FFF3C4);
+    border-radius: 10px;
+    border: 2px solid #FFB74D;
+}
+
+.betting-section h3 {
+    color: #E65100;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.bet-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.bet-btn {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 80px;
+}
+
+.bet-btn:hover {
+    background: linear-gradient(135deg, #FB8C00, #EF6C00);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bet-btn.active {
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+}
+
+.bet-btn:disabled {
+    background: linear-gradient(135deg, #BDBDBD, #9E9E9E);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+    margin: 25px 0;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #E91E63, #C2185B);
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(233, 30, 99, 0.3);
+    min-width: 140px;
+}
+
+.primary-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #D81B60, #AD1457);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(233, 30, 99, 0.4);
+}
+
+.action-btn {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+    min-width: 100px;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #1E88E5, #1565C0);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(33, 150, 243, 0.4);
+}
+
+.secondary-btn {
+    background: linear-gradient(135deg, #607D8B, #455A64);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(96, 125, 139, 0.3);
+    min-width: 100px;
+}
+
+.secondary-btn:hover {
+    background: linear-gradient(135deg, #546E7A, #37474F);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(96, 125, 139, 0.4);
+}
+
+button:disabled {
+    background: linear-gradient(135deg, #BDBDBD, #9E9E9E) !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    opacity: 0.6;
+}
+
+.instructions {
+    margin-top: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, #F3E5F5, #E1BEE7);
+    border-radius: 10px;
+    border: 2px solid #BA68C8;
+    text-align: left;
+}
+
+.instructions h4 {
+    color: #7B1FA2;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.instructions p {
+    color: #4A148C;
+    margin: 8px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 650px) {
+    body {
+        padding: 5px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    
+    .game-container {
+        padding: 15px;
+    }
+    
+    .game-info {
+        font-size: 1rem;
+        padding: 12px 15px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .cards-container {
+        gap: 8px;
+        min-height: 100px;
+    }
+    
+    .card {
+        width: 60px;
+        height: 85px;
+        font-size: 0.8rem;
+    }
+    
+    .card:not(.hidden) .rank {
+        font-size: 1rem;
+    }
+    
+    .card:not(.hidden) .suit {
+        font-size: 1.2rem;
+    }
+    
+    .bet-buttons {
+        gap: 8px;
+    }
+    
+    .bet-btn {
+        min-width: 70px;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .primary-btn, .action-btn, .secondary-btn {
+        min-width: 200px;
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+/* スマートフォン向け（縦向き）*/
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+    
+    .game-container {
+        padding: 12px;
+    }
+    
+    .game-info {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+    
+    .dealer-area, .player-area {
+        padding: 15px;
+        margin: 20px 0;
+    }
+    
+    .dealer-area h3, .player-area h3 {
+        font-size: 1.1rem;
+    }
+    
+    .card {
+        width: 50px;
+        height: 70px;
+        font-size: 0.7rem;
+    }
+    
+    .card:not(.hidden) .rank {
+        font-size: 0.9rem;
+    }
+    
+    .card:not(.hidden) .suit {
+        font-size: 1rem;
+    }
+    
+    .betting-section {
+        padding: 15px;
+        margin: 20px 0;
+    }
+    
+    .betting-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .bet-btn {
+        min-width: 60px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .primary-btn, .action-btn, .secondary-btn {
+        min-width: 180px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .instructions {
+        padding: 15px;
+        text-align: center;
+    }
+    
+    .instructions p {
+        font-size: 0.85rem;
+    }
+}
+
+/* 小さいスマートフォン向け */
+@media (max-width: 320px) {
+    h1 {
+        font-size: 1.4rem;
+    }
+    
+    .card {
+        width: 45px;
+        height: 60px;
+        font-size: 0.6rem;
+    }
+    
+    .bet-btn {
+        min-width: 50px;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .primary-btn, .action-btn, .secondary-btn {
+        min-width: 160px;
+        font-size: 0.8rem;
+    }
+}

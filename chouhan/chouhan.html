@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>丁半ゲーム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="../index.html" class="back-button">← 戻る</a>
+    <h1>丁半ゲーム</h1>
+    
+    <div class="game-container">
+        <div class="game-info">
+            <div class="money">所持金: <span id="money">1000</span>円</div>
+            <div class="bet-amount">賭け金: <span id="betAmount">100</span>円</div>
+        </div>
+        
+        <div class="dice-container">
+            <div class="dice" id="dice1">
+                <div class="dice-face">?</div>
+            </div>
+            <div class="dice" id="dice2">
+                <div class="dice-face">?</div>
+            </div>
+        </div>
+        
+        <div class="result-display" id="resultDisplay">
+            <div class="sum-display" id="sumDisplay"></div>
+            <div class="result-text" id="resultText"></div>
+        </div>
+        
+        <div class="betting-section">
+            <h3>賭け金を選択</h3>
+            <div class="bet-buttons">
+                <button class="bet-btn" data-amount="50">50円</button>
+                <button class="bet-btn active" data-amount="100">100円</button>
+                <button class="bet-btn" data-amount="200">200円</button>
+                <button class="bet-btn" data-amount="500">500円</button>
+            </div>
+        </div>
+        
+        <div class="choice-section">
+            <h3>丁か半かを選択</h3>
+            <div class="choice-buttons">
+                <button class="choice-btn" id="choBtn" data-choice="cho">
+                    <span class="choice-kanji">丁</span>
+                    <span class="choice-desc">（偶数）</span>
+                </button>
+                <button class="choice-btn" id="hanBtn" data-choice="han">
+                    <span class="choice-kanji">半</span>
+                    <span class="choice-desc">（奇数）</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="rollButton" disabled>サイコロを振る</button>
+            <button id="resetButton">リセット</button>
+        </div>
+        
+        <div class="instructions">
+            <h4>遊び方</h4>
+            <p>1. 賭け金を選択します</p>
+            <p>2. 丁（偶数）か半（奇数）を選択します</p>
+            <p>3. サイコロを振って結果を確認します</p>
+            <p>4. 予想が当たれば賭け金の2倍がもらえます</p>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>

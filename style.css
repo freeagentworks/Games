@@ -162,6 +162,16 @@ header h1 {
     color: #673ab7;
 }
 
+.chouhan-icon {
+    background-color: rgba(139, 69, 19, 0.2);
+    color: #8B4513;
+}
+
+.blackjack-icon {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #333;
+}
+
 .game-card h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
